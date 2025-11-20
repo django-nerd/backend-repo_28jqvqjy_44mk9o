@@ -115,10 +115,32 @@ def list_providers():
     }
     return {"providers": PROVIDERS, "configured": configured}
 
+
+def _require_provider_key(provider: str, api_keys: Optional[Dict[str, str]]):
+    """Ensure an API key is available for the selected provider (env or payload)."""
+    provider_env_map = {
+        "hailuo": "HAILUO_API_KEY",
+        "sora2": "SORA_API_KEY",
+    }
+    if provider not in provider_env_map:
+        return  # no key required for other providers (simulated)
+    env_var = provider_env_map[provider]
+    env_val = os.getenv(env_var)
+    req_val = None
+    if api_keys:
+        # payload key should use same provider key name
+        req_val = api_keys.get(provider)
+    if not (env_val or req_val):
+        raise HTTPException(status_code=422, detail=f"API key required for provider '{provider}'. Provide via {env_var} or api_keys.{provider}")
+
+
 @app.post("/api/jobs", response_model=JobResponse)
 def create_job(payload: CreateJobRequest):
     if db is None:
         raise HTTPException(status_code=500, detail="Database not configured")
+
+    # Enforce API key first for providers that need it
+    _require_provider_key(payload.provider, payload.api_keys)
 
     # Basic validation for multi-frame inputs
     if payload.mode != "text_to_video":
