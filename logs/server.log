@@ -1,34 +1,8 @@
 INFO:     Will watch for changes in these directories: ['/home/workspace']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [234] using StatReload
-INFO:     Started server process [236]
+INFO:     Started reloader process [281] using StatReload
+INFO:     Started server process [283]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     172.20.0.1:54962 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54962 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:40734 - "HEAD / HTTP/1.1" 405 Method Not Allowed
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:54970 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53572 - "POST /api/jobs HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53578 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53578 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
-INFO:     172.20.0.1:53578 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
+INFO:     172.20.0.1:33490 - "GET /api/jobs?limit=50 HTTP/1.1" 200 OK
+INFO:     172.20.0.1:33502 - "HEAD / HTTP/1.1" 405 Method Not Allowed
