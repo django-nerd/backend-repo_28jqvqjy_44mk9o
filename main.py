@@ -71,8 +71,8 @@ def simulate_job(job_id: str, provider: str, duration: int):
         # Simulate processing time based on duration (but capped)
         wait_time = min(max(duration // 2, 2), 8)
         time.sleep(wait_time)
-        # Produce a demo video URL
-        demo_url = "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        # Produce a demo video URL (reliable CORS-friendly public sample)
+        demo_url = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
         db["videojob"].update_one(
             {"_id": ObjectId(job_id)},
             {"$set": {"status": "completed", "result_url": demo_url}}
