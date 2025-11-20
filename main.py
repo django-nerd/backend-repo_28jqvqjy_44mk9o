@@ -1,14 +1,14 @@
 import os
 import threading
 import time
-from typing import List, Optional, Literal
+from typing import List, Optional, Literal, Dict
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from bson import ObjectId
 
-from database import db, create_document, get_documents
+from database import db, create_document
 
 app = FastAPI(title="Multi AI Video Generator API")
 
@@ -46,16 +46,33 @@ PROVIDERS = [
 
 class CreateJobRequest(BaseModel):
     provider: Literal["gemini", "wan2_1", "grok", "hailuo", "sora2"]
+    # Generation mode
+    mode: Literal[
+        "text_to_video",
+        "image_sequence_to_video",
+        "multi_image_guided",
+    ] = "text_to_video"
+
     prompt: str = Field(..., min_length=3, max_length=2000)
     aspect_ratio: Literal["16:9", "9:16", "1:1", "4:3"] = "16:9"
     duration: int = Field(5, ge=1, le=60)
 
+    # Multi-frame / multi-image support
+    image_urls: Optional[List[str]] = None
+    fps: Optional[int] = Field(24, ge=1, le=60)
+
+    # Optional per-request API keys (demo-friendly). Prefer .env for production.
+    api_keys: Optional[Dict[str, str]] = None
+
 class JobResponse(BaseModel):
     id: str
     provider: str
+    mode: str
     prompt: str
     aspect_ratio: str
     duration: int
+    fps: Optional[int] = None
+    image_urls: Optional[List[str]] = None
     status: Literal["queued", "processing", "completed", "failed"]
     result_url: Optional[str] = None
     error: Optional[str] = None
@@ -91,14 +108,30 @@ def read_root():
 
 @app.get("/api/providers")
 def list_providers():
-    return {"providers": PROVIDERS}
+    # Indicate which providers have keys present (best-effort)
+    configured = {
+        "hailuo": bool(os.getenv("HAILUO_API_KEY")),
+        "sora2": bool(os.getenv("SORA_API_KEY")),
+    }
+    return {"providers": PROVIDERS, "configured": configured}
 
 @app.post("/api/jobs", response_model=JobResponse)
 def create_job(payload: CreateJobRequest):
     if db is None:
         raise HTTPException(status_code=500, detail="Database not configured")
+
+    # Basic validation for multi-frame inputs
+    if payload.mode != "text_to_video":
+        if not payload.image_urls or len(payload.image_urls) == 0:
+            raise HTTPException(status_code=422, detail="image_urls is required for selected mode")
+        if payload.mode == "image_sequence_to_video" and not payload.fps:
+            raise HTTPException(status_code=422, detail="fps is required for image sequence mode")
+
     data = payload.model_dump()
+    # Do not persist api_keys into DB
+    data.pop("api_keys", None)
     data.update({"status": "queued", "result_url": None, "error": None})
+
     job_id = create_document("videojob", data)
 
     # Start background simulation thread
